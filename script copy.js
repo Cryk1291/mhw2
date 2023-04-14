@@ -1,7 +1,5 @@
 /* TODO: inserite il codice JavaScript necessario a completare il MHW! */
 
-
-const N_domande = 3;
 let lista_not_check = [];
 let checked = [];
 let risposte = [];
@@ -16,7 +14,7 @@ function initialize(){
         sez.addEventListener('click', handler_sez, {capture: true}); //ogni sezione sarà mandata al figlio
     
     
-    for(let div of lista_block){ //TUTTI I BLOCCHI DI UN'UNICA SECTION
+    for(let div of lista_block){ //TUTTI I BLOCCHI
             div.addEventListener('click', handler_block);
             lista_not_check.push(div);
     }
@@ -27,7 +25,8 @@ function initialize(){
 function handler_sez(event){
     const section = event.currentTarget;
     const clicker = event.target;
-    const lista_div = section.querySelectorAll('div');
+    const lista_div = section.querySelectorAll('div'); //TUTTI I DIV DI UNA SEZIONE 
+
     /*--------------------------QUESTO CONTROLLO SERVE A FARMI CAPIRE SE L'UTENTE
     INVECE DI CLICCARE SULLE CASELLE PRECISE, STA CLICCANDO SUI BORDI, E QUINDI
     CHI GENERA L'EVENTO COINCIDE CON CHI LO GESTISCE (CIOE' LO SFONDO) E IO NON
@@ -39,21 +38,22 @@ function handler_sez(event){
     }
 
     for(let blocks of lista_div)
-        blocks.classList.add('opacitura');
+        blocks.classList.add('opacita');
     
 }
 
 function handler_block(event){
     const block = event.currentTarget;
-    const padre_main = block.parentNode;
-    const img = block.querySelector('.checkbox');
-    const index = lista_not_check.indexOf(block);
+    const padre_main = block.parentNode;    //MI RIFERISCO ALLA SECTION
+    const img = block.querySelector('.checkbox'); //CHECKBOX
+    const index = lista_not_check.indexOf(block); //PRENDO L'INDICE PRECISO DEL BLOCCO (TRA TUTTI)
 
     
-    block.classList.remove('opacitura');
+    block.classList.remove('opacita');
     block.classList.add('selection');
     img.src = 'images/checked.png';
 
+    //FUNZIONE CHE PROCEDE AL CAMBIO DEL CHECK 
     uncheck(index, padre_main);
     checked.push(block);
     risposte.push(block);
@@ -64,7 +64,7 @@ function handler_block(event){
     
     //questo controllo lo faccio per dichiarare finito tutto
     const lenght_obj = Object.keys(sondaggio).length
-    if(lenght_obj == N_domande){
+    if(lenght_obj == lista.length){
         const uscita = getWinner();
         appendFiglio(uscita, padre_main);
     }
@@ -77,14 +77,12 @@ function uncheck(index, padre_main){
         const indice = lista_not_check.indexOf(blocco);
         //prendo gli indici degli elementi
         const padre = blocco.parentNode; 
-        if(index != indice){
-            if(padre == padre_main){
-                console.log('mimmo');
+        if(index != indice && padre === padre_main){ //SE L'INDICE DEL BLOCK E' DIVERSO DA QUELLO ATTUALE 
+                                                    //E SE LA SEZIONE E' LA STESSA
                 const uncheck = blocco.querySelector('.checkbox');
                 uncheck.src = 'images/unchecked.png';
                 blocco.classList.remove('selection');
-                risposte.pop();
-            }
+                risposte.pop();                 //POP RIMUOVE L'ULTIMO ELEMENTO INSERITO
         }
     }
 }
@@ -96,8 +94,8 @@ function getWinner(){
     let counter = 0;
     let max = 0;
 
-    for(let i = 0; i < N_domande; i++){
-        for(let j = 0; j < N_domande; j++)
+    for(let i = 0; i < lista.length; i++){
+        for(let j = 0; j < lista.length; j++)
             if(valori[i] == valori[j])
                 counter++;
 
