@@ -155,7 +155,7 @@ function restart(event){
     risposte = [];
     sondaggio = {};
     for(let div of lista_block){ //TUTTI I BLOCCHI DI OGNI SECTION
-        div.classList.remove('opacitura');
+        div.classList.remove('opacita');
         div.classList.remove('selection');
         (div.querySelector('.checkbox')).src = 'images/unchecked.png';
     }
